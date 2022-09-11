@@ -14,3 +14,4 @@ This book brings you face-with-face with the most fundamental idea in computer p
 注:
 前言是由Harold Abelson撰写的, LISP的先驱者。这本书使用Scheme语言介绍解释器。掌握解释器的实现，将改变程序员对编程的根本看法。
 
+I did a lot of programming before I learned about interpreters, and I produced some substantial programs. One of them, for example, was a large data-entry and information-retrieval system written in PL/I. When I implemented my system, I viewed PL/I as a fixed collection of rules established by some unapproachable group of language designers. I saw my job not as to modify these rules, or even to understand them deeply, but rather to pick through the (very) large manual, selecting this or that feature to use. The notion that there was
