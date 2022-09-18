@@ -95,11 +95,115 @@ A Scheme program consists of a sequence of definitions and expressions that are 
 
 注: 程序环境并不是程序语言的一部分，上下文环境并不是语言的一部分。
 
-p5/539
+Programs may be stored in a file for convenient loading, or they may be entered interactively. In the interactive mode, you enter a definition or expression, which is evaluated as soon as it is complete. When an expression is entered, its value is printed. The system then prints an input prompt and the cycle repeats. This repetitive action is often called the read-eval-print loop. The transcript of a brief interactive session follows.
+
+```scheme
+> 3
+3
+> * ; evaluates to the standard multiplication procedure
+#<Procedure>
+> (* 2 3)
+6
+> (define x 3)
+> x
+3
+> (+ x (* 2 3))
+9
+```
+In this case the Scheme prompt is ">". A semicolon ";" and anything following it on the same line is ignored by Scheme so that comments may be inserted in programs and transcripts. In general, procedures cannot be printed. Thus the system simply prints some indication that a procedure has been returned. In this book "#<Procedure>" is that indicator.
+
+Following a definitio, many Scheme systems print the name of the variable defined. As the transcript illustrates, howerver, we choose not to print anything following a definition. This emphasizes that, in general, definitions do not have values. In this respect they are like statements, but their use is more limited. In this book **define** is used only at top level.
+
+A final note about definitions: the value of a variable may be **redefined**. That is , the value of an already defined variable may be changed with another definition.
+
+```
+> (define x 2)
+> x
+2
+> (define x (+ 1 x))
+> x
+3
 
 
+```
+
+Redefinition is allowed simply to make software development more convenient. In Scheme the values of variables with standard bindings, such as +, can be redefined. This is occasionally useful, for example, if you wish to keep track of how many times + is invoked with a negative argument. Redefinition of standard procedures, however, is risky; other may depend on them in unexpected ways.
+
+The interactive nature of Scheme aids program development. It is also helpful in learning Scheme, because it makes it easy to try things out if youu wish to test your understanding or discover what will happen. Transcripts of interactions with Scheme are also a convenient way of providing examples. We use them frequently. You are urged to study our examples carefully to be sure you understand why Scheme behaves as it does. Sometimes definitions made in one transcript will be used in other transcripts that follow.
+
+Exercise 1.1.1
+Start interacting with Scheme today! []
+
+Read-eval-print loops and redefinitions may not be appropriate in some programming environments. For example, a Scheme implementation might be designed to compile Scheme programs on one machine for execution at a later time on other machines. In this case a read-eval-print loop would be meaningless and redefinition would probably be undesirable. By making a clear distinction between a programming language and programming environments that support it, we treat the language itself as an abstraction. Such language abstraction is important, for it allows the same language to be used in many differnet environments.
+
+### 1.1.3 Conditional Evaluation
+We have seen that Scheme definitions cannot be expressed with an application, so a special form must be used. Conditional expressions are a second situation in which a special form is requried. The basic conditional expression in Scheme has this syntax:
+
+$$(if test-exp then-exp else-exp)$$
+
+The expression test-exp is evaluated first. If its value is true, then-exp is evaluated, and its value is returned as the value of the entire **if** expression. If the value of test-exp is false, else-exp is evaluated to obtain the value of the if expression.
+
+```
+> (if #t 1 2)
+1
+> (zero? 5)
+#f
+> (if (zero? 5) 1 (+ 1 2))
+3
+> (define true #t)
+> (define false #f)
+< (if (zero? 0)
+        (if false 1 2)
+        3)
+2
+> (if (if true false true) 2 3)
+3
+```
+
+The special form if cannot be implemented as a procedure. For one thing, only one of then-exp or else-exp should be evaluated, and it would be inefficient to evaluate both; but there is an even more compelling reason. An important use of conditionals is to prevent an expression from being evaluated when it is unsafe to do so. For example, we might write
+
+(if (zero? a) 0 (/ x a))
+
+to make sure that a is nonzero before dividing. In this situation, we say the test guards the division. Were if a procedure, its arguments would be evaluated before being applied, so the division-by-zero we were trying to avoid would be performed before it could be stopped.
+
+Several other special forms will be introduced later as they are needed, but define and if are enough to get us started.
+
+## 1.2 Data Types
+In this section we explore some of the data types in Scheme. Scheme implementations vary somewhat in the range of data types they support, and the repertoire of operations on the data types also varies. We discuss only those data types and operations that are required in this book. They should be part of every implementation.
+
+For each data type, we shall be concerned with three things:
+1. The set of values of that type.
+2. The procedures that operate on that type.
+3. The representation of values of that type when they appear internally as literals in programs or externally as characters that are read or printed.
+
+For example, in mathematics the data type of sets consists of the sets themselves, the well-defined operations on these sets (such as union, intersection, and set-difference), and the notation used to represent sets.
+
+It is an error to pass a standard procedure a value that is not of the expected type. For example, it does not make sense to try to add a number to #t. **Type checking** is required to detect such type errors. If these checks are perfromed at run time when standard procedures are invoked, as is generally the case for Scheme implementations, we have dynamic type checking. In many languages, an analysis is performed at compile time to detect potential type errors. This analysis , which must be based only on the text of the program and not run-time values, is called static type checking. It has the advantage of catching errors earlier but requires more complicated and restrictive rules for determining if a program is correctly typed.
+
+注: 对于数据类型的动态分析，静态分析的解释。动态类型检查是在程序运行时进行的检查，静态类型检查是在编译时进行的类型检查。保证越早发现类型错误越好。
+
+### 12.1 Numbers, Booleans, Characters, Strings, and Symbols
+We have already used two data types: number and boolean. Numbers may be included in Scheme programs in the usual way. The operations on numbers include the standard arithmetic operations, such as +, -, ${**}$,  and /.  The  type predicate number? takes an arbitray value and returns true if its argument is a number and false otherwise. The equality prediate for numbers is =.
 
 
+The boolean data type has only two values, true and false, represented by #t and #f, respectively. Booleans are used primarily in conditional expressions. The type predicate boolean? tests an arbitrary value to see if it is a boolean, boolean values may be compared for equality using the predicate eq?, and the standard procedure not performs logical negation.
+
+```
+> (eq? (boolean? #f) (not #f))
+#t
+```
+
+Characters that are visible when they print are represented as literals by preceding them with #\, for example #\a and #\%. Some nonprinting characters also have literal representations, such as #\space and #\newline. The character type, equality, and order predicates are char?, char=? , and char<?, respectively, and char->integer takes a character and returns an integer representation of the character. The predicates char-alphabetic?, char-numeric?, and char-whitespace? are used to determine the class of a character. The predicate char-whitespace? returns true when its argument is a space, return or linefeed character.
+
+```
+> (char? #\$)
+#t
+< (char=? #\newline #\space)
+#f
+> (char<? #\a #\b)
+#t
 
 
+```
 
+Strings are sequences of characters that are represented by surrounding the characters with double quote marks. The string type predicate is string?. The procedure string-length takes a stirng and returns an integer indicating the number of characters in the string. The procedure string-append concatenates its arguments to form a new string. The procedures string->symbol, string->number, and string->list convert a string into a symbol, number, and list of characters, respectively. (Symbols and lists will be discussed soon.) The procedure string takes any number of arguments, which must be characters, and 
