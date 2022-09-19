@@ -114,6 +114,14 @@ C-c C-q, 退出,
 
 geiser’s gerbils will be scanning what you type
 C-c C-d, document,
+C-L, list lines,
+C-J, middle lines,
+
+> (library-directories)
+(("." . "."))
+
+### 参考资料 How to Debug Chez Scheme Program
+https://www.scheme.com/debug/debug.html
 
 
 
