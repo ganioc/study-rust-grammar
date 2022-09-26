@@ -206,4 +206,190 @@ Characters that are visible when they print are represented as literals by prece
 
 ```
 
-Strings are sequences of characters that are represented by surrounding the characters with double quote marks. The string type predicate is string?. The procedure string-length takes a stirng and returns an integer indicating the number of characters in the string. The procedure string-append concatenates its arguments to form a new string. The procedures string->symbol, string->number, and string->list convert a string into a symbol, number, and list of characters, respectively. (Symbols and lists will be discussed soon.) The procedure string takes any number of arguments, which must be characters, and 
+Strings are sequences of characters that are represented by surrounding the characters with double quote marks. The string type predicate is string?. The procedure string-length takes a stirng and returns an integer indicating the number of characters in the string. The procedure string-append concatenates its arguments to form a new string. The procedures string->symbol, string->number, and string->list convert a string into a symbol, number, and list of characters, respectively. (Symbols and lists will be discussed soon.) The procedure string takes any number of arguments, which must be characters, and returns a string of these characters. The procedure **string-ref** takes a string and a nonnegative integer less than the length of the string and returns the character indexed by the integer. Indexing is zero based, meaning that the characters are numbered strating with zero.
+
+```
+> (define a "This is a.")
+> (define ss (string-append s "longer string"))
+> (string? s)
+#t
+> (string-length s)
+10
+> (string-length ss)
+23
+> (string #\a #\b)
+"ab"
+> (string->symbol "abc")
+abc
+> (string->list s)
+(#\T #\h #\i #\s #\space #\i #\s #\space #\a #\.)
+
+```
+
+Programs that process other programs, such as many in this book, frequently manipulate identifiers. Identifiers are central to a number of other kinds of programming, such as artificial intelligence and database applications. In fact, identifiers play an important role in most programs that are not primarily concerned with manipulating numbers. When identifiers are treated as values in Scheme, they are called symbols. The manipulation of symbols is greatly facilitated by providing a distinct data type for them.
+
+按: symbol是标识符的意思，和字符串有着本质的区别。
+
+Just as strings must be surrounded with quote marks to distinguish them from the rest of a program, symbolic literals must be specially marked, for otherwise they would be indistinguishable from variable references. Thus another special form is needed to introduce symbols into programs:
+
+(quote datum)
+
+Here **datum** may be a symbol or any other standard external (printed) representation for Scheme data. The value of a quoted literal expression is the associated data value.
+
+```
+> (define x 3)
+> x
+3
+> (quote x)
+x
+> 99
+99
+> (quote 99)
+99
+
+```
+
+Such expressions are used so often that there is an abbreviation for them. The form (quote datum) may also be written
+
+'datum
+
+utilizing the single-quote character. Most languages have quoting mechanisms of some sort to avoid confusion between literals and other program elements. The only literals that are "self-quoting," meaning that they may be used directly as expressions without being enclosed in a quote expression, are numbers, booleans, strings, and characters.
+
+Two basic operations on symbols are symbol type predicate, symbol?, and the predicate for testing equality of two symbols, eq?,
+
+```
+> (define x 3)
+> (number? x)
+#t
+> (symbol? x)
+#f
+> (number? 'x)
+#f
+> (symbol? 'x)
+#t
+> (eq? 'x 'x)
+#t
+> (eq? 'x 'y)
+#f
+> (define y 'apple)
+> y
+apple
+> (eq? y (quote apple))
+#t
+> (eq? y 'y)
+#f
+
+
+```
+
+### 1.2.2 Lists
+A list is an ordered dequence of elements, which may be of arbitrary types. Lists are a flexible way of combining multiple values into a single compound object. Scheme provides convenient facilities for creating and manipulating lists. These facilities , along with most other Scheme data types, are derived from the much older language LISP. (The name stands for LISt Processing.)
+
+A list is represented by surrounding representations of its elements with a pair of parentheses. For example, (a 3 #t) represents a list consisting of three elements: the symbol a, the number three, and the value true. Here are a few more lists
+
+()   the empty list
+(a)  a list of length 1
+((b c d)) a list of length 1 that contains a list of length 3
+
+Just as quote is necessary to distinguish between symbolic literls and variables, it is alos necessary to avoid confusing literal lists with procedure calls or special forms. The expression (quote (a b c)) yields the list (a b c) as its value. Howerver, the expression (a b c) is a procedure call whose value depends on the values of the vairables a, b and c; or perhaps it is a special form where a is a keyword.
+
+There are several standard procedures that build new lists. Here we consider the most important ones, list and cons. The standard procedure list may be applied to any number of arguments. It forms a list of their values. (Most procedures take a fixed number of arguments, but list, string and string-append are exceptions.)
+
+
+```
+> (list 1 2 3)
+(1 2 3)
+> (define x 3)
+> (define y 'apple)
+> (list x y)
+(3 apple)
+> (define list-1 '())
+> (define list-2 '(a))
+> (define list-3 '((b)))
+> (list list-1 list-2 list-3 '(((c))))
+(() (a) ((b)) (((c))))
+> (list)
+()
+
+```
+
+The second important list-building procedure, cons, always takes two arguments. The first may be any Scheme value, and the second must (for the moment) be a list. If its first argument is the value **v** and its second argument is the list (v0 v1 ... vn-1), then cons returns the list (v v0 v1 ... vn-1). The returned list is always one longer than the second argument. The name cons stands for construct, because cons constructs a new compound object. (Actually cons's second argument may be anything. But if it is not a list, the value returned will not be a list either. We discuss this further in section 1.2.3.) Study the following example scarefully; they illustrate several important featues of cons.
+
+```
+> (cons 'a '(c d))
+(a c d)
+> (list 'a '(c d))
+(a (c d))
+> (cons '(a b) '(c d))
+((a b) c d)
+> (cons '() '(c d))
+(() c d)
+> (cons 'a '())
+(a)
+> (cons '(a b) '())
+((a b))
+> (define y 'apple)
+> (cons y list-2)
+(apple a)
+> (define list-4 (cons list-1 list-2))
+> list-4
+(() a)
+> (cons list-4 list-3)
+((() a) (b))
+
+```
+
+Observe in these examples that if the first element to cons is a list, that list becomes an element of the value returned by cons. To add all elements of a list to the front of another list (in the same order), the procedure append should be used.
+
+```
+> (append '(a b) '(c d))
+(a b c d)
+> (append '() '(c d))
+(c d)
+> (append '(a b ) '())
+(a b)
+
+
+
+```
+
+Compare these results with those obtained by passing the same arguments to cons.
+
+The simplest way to divide a list is between the first element and the rest of the list. For historical reasons, the first element of a list is known as its car and the rest of the list is known as its cdr. The standard prcedres car and cdr select these components of a list. Thus if l is the list (v0 v1 ... vn-1), then (car l)=v0 and (cdr l)=(v1 ... vn-1). It is an error to call car or cdr with the empty list.
+
+```
+> (car '(a b c))
+a
+> (cdr '(a b c))
+(b c)
+> (car (cdr '(a b c)))
+b
+> (cdr 'a())
+()
+
+```
+
+Clearly car and cdr undo what cons does. The exact relationship between car, cdr, and cons is expressed by the eqations
+
+    (car (cons v l)) = v
+    (cdr (cons v l)) = l
+
+where v is nany value, l is any list, and = indicates identical values.
+
+Nested calls to car and cdr are so common that Scheme provides an assortment of procedures that take are of the more frequenct cases. For example, the procedures cadr and caddr are defined such that
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

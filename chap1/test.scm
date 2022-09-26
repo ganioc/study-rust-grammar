@@ -9,6 +9,10 @@
       (+ y z)
       (- y z)))
 
-
+(define ss "This is longer string.")
+(string-length ss)
+(string-ref ss 2)
+(define s "This is a.")
+(string->list s)
 
 
