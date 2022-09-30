@@ -124,7 +124,11 @@ C-J, middle lines,
 https://www.scheme.com/debug/debug.html
 
 
+Modus operandi,
+Scheme-Elisp interface makes some assumptions about the capabilites and interaction mode of the corresponding REPL.  Geiser expects the latter to support namespaces in the form of a module system, and to provide a well-defined way to establish the REPL's current namespace (or module), as well as the current file's module (or namespace). Thus , all evaluations performed by Geiser either in the REPL or in a source code buffer happen in the context  of the current namespace. Every time you switch to a different file, you'r switching namespaces automatically; at the REPL, you must request  the switch explicitly (usually just using means provided by the Scheme implementation itself).
 
 
+Geiser Chez REPL
 
+## Must needs,
 

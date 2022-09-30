@@ -379,17 +379,165 @@ where v is nany value, l is any list, and = indicates identical values.
 Nested calls to car and cdr are so common that Scheme provides an assortment of procedures that take are of the more frequenct cases. For example, the procedures cadr and caddr are defined such that
 
 
+(cadr l)=(car (cdr l))
+(caddr l)=(car (car (cdr (cdr l))))
+
+The sequence of as and ds surrounded by c and r in the procedure name determines the cars and cdrs and their ordering. The rightmost a/d (car/cdr) is performed first, just as the innermost procedure call is done first.
+
+```
+> (cadr '(a b c))
+b
+> (cddr '(a b c))
+(c)
+> (caddr '(a b c))
+c
+```
+
+Empty lists are always represented by the dame object, called the **empty list** . (For historical reasons, it is sometimes called the null object.) The predicate null? tests if its argument is the empty list.
+
+```
+> (null? '())
+#t
+> (define list-2 (list 'a))
+> list-2
+(a)
+> (null? list-2)
+#f
+> (null? (cdr list-2))
+#t
+
+```
+
+### Exercise 1.2.1
+Fill in the blank lines of the following transcript.
+
+```
+> (define x '(a b ((3) c) d))
+> (car (cdr x))
+# [Answer]
+
+> (cdaddr x)
+# [Answer]
+
+> (char? (car '(#\a #\b)))
+# [Answer]
+
+> (cons 'x x)
+# [Answer]
+
+> (cons (list 1 2) (cons 3 '(4)))
+# [Answer]
+
+> (cons (list) (list 1 (cons 2 '())))
+
+```
+
+注: 第一道题很简单，在命令行上敲入执行即可。也许需要写一个详细的如何使用 Chez Scheme的详细教程。
+
+### 1.2.3 Pairs
+Most of the time it is desirable to view lists abstractly as we have just done, howerver, it is sometimes necessary to understand how lists are constructed.
+
+In Scheme, nonempty lists are represented as pairs. A pair (sometimes called a **dotted pair** or **cons cell**) is a structure with two fields, called car and cdr. The procedure cons creates a new pair with the car and cdr fields initialized to the values of its first and second arguments, respectively. The procedures car and cdr access the two fields. This explains the behavior introduced in the last section. The type predicate for recognizing pairs is pair?.
+
+![image 1.2.1](../imgs/figure-1.2.1.png)
+
+Figure 1.2.1 Box diagrams
+
+The structure of values built from pairs is conveniently illustrated by diagrams in which pairs are represented by boxes. Each of these boxes has a left and a right half, representing the car and cdr fields, respectively. Each half contains a pointer to another box if the value of the corresponding field is another pair. If the field value is the empty list, this is represented by a slash through the box. Finally, if the field value is a symbol, number, or boolean, its printed representation is written in the corresponding half of the box. The list (a (b c) d) is represented in figure 1.2.1 (a).
+
+If a list has length n, the result of taking the cdr of the list n times must be the empty list. Thus a list is represented by either the empty list or a chain of pairs, linked by their cdr fields, with the empty list in the cdr field of the last pair of the chain. A cdr-linked chain of cons cells that does not end in the empty list is called an **improper list**, even though it is not a list at all. Figure 1.2.1 (b) illustrates such a data structure. We can denote such data structures in a linear format by writng (a . d) for a pair whose car is a and whose cdr is d. (Hence the term dotted pair.) The data structures in figure 1.2.1 (a) and (b) might be written as
+
+(a . ((b . (c . ())) . (d . ())))
+
+and 
+((1 . ()) . (2 . (3 . 4))) respectively. Either of these might appear quoted in a Scheme program. This dot notation may be intermixed with conventional list notation, so the second structure might also be written 
+
+((1) 2 3 .4)
+
+注: 这里的第二种表示的是, 最后一个pair的cdr不为空, 这里用一个点在car, cdr中间出现，用以表示该场景；而第一种表示方法里，最后一个pair的cdr为空。
+
+Dot notation is required only when writing improper lists.
+
+The predicate eq? may be used to compare pairs as well as symbols. In fact, eq? may be used to test if any two objects are the same object. The behavior  of eq? on symbols, booleans, characters, and the empty list is straightforward: if they have the same written representation, they are the same object. This is not necessarily true for numbers, pairs , and strings. The behavior of eq? on numbers is implementation dependent. If eq? is presented with two pairs (or strings), it returns true if and only if they are the same pair (or string). Since cons creates a new pair every time it is called, eq? must be used with caution on lists.
+
+注: predicate, 为谓语、断言、阐明、表示、判断词，等的意思。
+
+```
+> (define a (cons 3 '()))
+> (define b (cons 3 '()))
+> a
+(3)
+> b
+(3)
+> (eq? a a)
+#t
+> (eq? a b )
+#f
+> (eq? (cons 1 2) (cons 1 2))
+#f
+> (eq? '() '())
+#t
 
 
+```
+
+In this example a and b are different pairs, even though they both print as (3), so they are not "eq to each other". Howerver , every reference to the variable a returns the same pair, so (eq? a a) is true.
+
+Pairs may be shared. That is the same pair may be referred to by different variable bindings and pair fields.
+
+```
+> b
+(3)
+> (define c b)
+> (eq? b c)
+#t
+> (define d (cons 2 c))
+> (define e (cons 2 c))
+> d
+(2 3)
+> e
+(2 3)
+> (eq? d e)
+#f
+> (eq? (cdr d) (cdr 3))
+#t
+
+```
+
+![image 1.2.2](../imgs/figure-1.2.2.png)
+
+Here b, c, the cdr of d, and the cdr of e are all the same pair, though d and e are different pairs. Standard printed notation does not represent sharing, but box diagrams do, as figure 1.2.2 illustrates. The sharing of literals is not specified; for example, (eq? '(3) '(3)) could be true or false.
+
+There are procedures for assigning new values to the car and cdr fields of an existing pair, which will be discussed in section 4.5. When a pair is modified by one of these procedures, the change is noted in all data structures that share the pair.
+
+the only other way to detect sharing of pairs is by using eq?.
+
+### Exercise 1.2.2
+Fill in the blank lines of the following transcript.
+
+```
+> (define x1 '(a b))
+> (define x2 '(a))
+> (define x3 (cons x1 x2))
+> x1
+
+> (eq? x3 (cons x1 x2))
+
+> (eq? (cdr x3) x2)
+
+> (eq? (car x1) (car x2))
+
+> (cons (cons 'a 'b) (cons 'c '()))
+
+> (cons 1 (cons 2 3))
 
 
+```
 
+### 1.2.4 Vectors
+So far we have seen one means for building compound data object in Scheme: the cons cell. These cells may be used to construct lists of arbitrary length. Lists are a derived data type because they are built using primitive data types: the cons cell and the empty list. The advantage of lists is the ease with which new lists may be formed by adding elements to the front of existing lists. However, lists do not provide names for all their elements or random access to them. Compositions of invocations of car and cdr, also called car/cdr chains, are an awkward way of referring to the first few list elements. It is possible to access list elements via an index number, but with conventional lists access time increases linearly with the index, since to reach a given element it is necessary to traverse the cdr pointers of all the elements that appear earlier in the list.
 
-
-
-
-
-
+P19
 
 
 

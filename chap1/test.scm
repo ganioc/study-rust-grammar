@@ -1,3 +1,5 @@
+;; A test program, test.scm
+;;
 ;;
 
 (+ 1 2340)
@@ -13,6 +15,7 @@
 (string-length ss)
 (string-ref ss 2)
 (define s "This is a.")
-(string->list s)
+;; (print "chicken test")
+
 
 
