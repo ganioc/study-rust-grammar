@@ -539,5 +539,27 @@ So far we have seen one means for building compound data object in Scheme: the c
 
 P19
 
+Neither cons cells nor lists correspond to the two ways to build compound data objects that are most commonly provided by programming languages: records and arrays. Record elements are selected by field names. Records are also heterogeneous, meaning that their elements may differ in their type. Arrays , on the other hand, are homogeneous, in the sense that each of their components must be of the same type, and array components are selected by an index number (or multiple index numbers in the case of multidimensional arrays). Both records and arrays provide random access to their components; that is each component may be accessed in the same amount of time.
+
+Scheme does not provide arrays or records directly. Instead it supplies vectors, which may be used in place of arrays and records. Vectors provide random access via index numbers (like arrays) and may be heterogeneous (like records).
+
+The standard procedure vector takes an arbitrary number of arguments, such as list and string, and constructs a vector whose elements contain the argument values. Vectors are written like lists, but with a hash (#) immediately preceding the left parenthesis. By convention, vectors must also be quoted when they appear in programs as literals.
+
+```
+> (define v1 (vector 1 2 (+ 1 2)))
+> v1
+#(1 2 3)
+
+
+```
+
+
+
+
+
+
+
+
+
 
 

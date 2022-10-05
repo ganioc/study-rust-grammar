@@ -17,5 +17,22 @@
 (define s "This is a.")
 ;; (print "chicken test")
 
+;; (define buggy-remove
+;;   (lamda (x ls)
+;; 	 (if (null? x)
+;; 	     '()
+;; 	     (if (equal? (car ls) x)
+;; 		 (buggy-remove x (cdr ls))
+;; 		 (cons (car ls) (buggy-remove x (cdr ls)))))))
 
+(define buggy-remove
+  (lambda (x ls)
+    (if (null? x)
+	'()
+	(if (equal? (car ls) x)
+	    (buggy-remove x (cdr ls))
+	    (cons (car ls)
+		  (buggy-remove x (cdr ls)))))
+    )
+  )
 

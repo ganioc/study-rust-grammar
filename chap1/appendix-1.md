@@ -131,4 +131,59 @@ Scheme-Elisp interface makes some assumptions about the capabilites and interact
 Geiser Chez REPL
 
 ## Must needs,
+Find Geiser's package in NonGNU ELPA,  MELPA, 
+
+M-x package-install RET geiser-mit RET
+
+C-c C-z ;; 切换到REPL,
+
+
+## Basic debug techniques
+R. Kent Dybvig, Aug 2002, 
+* Basic debugging techniques, isolate 95% bugs,
+* Advanced debugging technques,
+
+### Printing messages,
+
+### Tracing,
+an automated mechanism for printing messages,
+
+* Basic debugging techniques, isolate 95% bugs,
+* Advanced debugging technques,
+
+### Printing messages,
+
+### Tracing,
+an automated mechanism for printing messages,
+
+```scheme
+1. (trace name ...)
+2. (untrace name null?)
+3. (trace-define)
+4. (trace-lambda)
+
+```
+
+## Advanced techniques
+(debug)
+?
+To inspet the error contiuation, stack, at the point where the error occurred.
+
+
+
+
+### Geiser debugger?
+
+
+
+
+
+
+
+
+
+
+
+
+
 
