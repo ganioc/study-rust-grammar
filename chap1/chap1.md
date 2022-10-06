@@ -549,17 +549,100 @@ The standard procedure vector takes an arbitrary number of arguments, such as li
 > (define v1 (vector 1 2 (+ 1 2)))
 > v1
 #(1 2 3)
+> (define v2 (quote #(a b)))
+> v2
+#(a b)
+> (vector v1 v2)
+#(#(1 2 3) #(a b))
+> '#(#(a nested vector) (and a list) within a quoted vecotr)
+#(#(a nested vector) (and a list) within a quoted vecotr)
+
+```
+
+The number of elements in a vecotr is its length, which may be determined with the standard procedure vector-length. The type predicate for vectors is vector?. The selector vector-ref taks a vecotr and a zero-based index and returns the value of the element indicated by the index. Thus the indices for a given vector are natural numbers in the range from zero through one less than the length of the vector. There are procedures, vector->list and list->vector, for transforming one compound data type into the other.
+
+```
+> (define v3 '#(first second last))
+> (vector? v3)
+#t
+> (vector-ref v3 0)
+first
+> (vector-length v3)
+3
+> (vector-ref v3 (- (vector-length v3) 1))
+last
+> (vector-ref '#(another #((heterogeneous) "vector")) 1)
+#((heterogeneous) "vector")
+> (vector->list v3)
+(first second last)
 
 
 ```
 
+Of course it is an error to pass vector-ref an index number that is not a valid index for the given vector.
+
+We use a data structure called a cell, a "one-element" vector. In addition to the procedure make-cell, which constructs a cell, there is a procedure for referencing a cell, cell-ref and one that determines if its argument is a cell, cell?. Cells will be useful in chapter 5 for characterizing languages with side effects and in chapter 6 for describing various parameter-passing mechanisms. See exercise 1.3.2 for an implementation of cells.
+
+The procedure eq? may again be used to test whether two objects are the same vector. An assignment operation for changing the value of a vector element is introduced in section 4.5. As was the case with pairs, the sharing of vectors in data structures may be revealed using eq? or assignment.
+
+### Exercise 1.2.3
+Fill in the blank lines of the following transcript
+
+```
+> (define v1 (vector (cons 1 2) 3))
+> (define v2 (vector 'a v1))
+> v2
+;; #('a #((1 2) 3))
+#(a #((1 . 2) 3))
+> (define v3 '#(a #((1 . 2) 3)))
+> (eq? v1 v3)
+#f
+
+> (eq? v1 (vector-ref v2 1))
+
+> (eq? (vector-ref v1 0)
+	(vector-ref (vector-ref v2 1) 0))
+	
+
+```
+
+## 1.3 Procedures
+As you might expect, **procedure?** is a Scheme type predicate for procedures. The following transcript illustrates this as well as demonstrating that procedures can be treated as values.
+
+```
+> (procedure? 'car)
+#f
+> (procedure? car)
+#t
+> (procedure? (car (list cdr)))
+#t
 
 
+```
+
+The first two examples distinguish between the symbol car and the procedure car. The second and the third illustrate passing a procedure as an argument to another procedure. In the third, the procedure cdr is also stored in a data structure and returned as the value of another procedure, car. Here are some more complicated examples
+
+```
+> (if (procedure? 3) car cdr)
+#<Procedure>
+> ((if (procedure? 3) car cdr) '(x y z))
+(y z)
+> (((if (procedure? procedure?) cdr car)
+	(cons car cdr))
+	'(car in the car))
+(in the car)
+> (((if (procedure? procedure?) car cdr)
+	(cons car cdr))
+	'(x y z))
+x
+```
+
+Procedures are normally called using the application form, as in (+ 1 2), but sometimes we need to call a procedure with argument values that have already been assembled into a list. The standard procedure **apply** is provided for this purpose. It takes a procedure and a list and returns the result of calling the procedure with the values given in the list.
+
+```
 
 
-
-
-
+```
 
 
 

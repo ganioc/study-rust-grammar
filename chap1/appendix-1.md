@@ -176,6 +176,49 @@ To inspet the error contiuation, stack, at the point where the error occurred.
 
 
 
+## auto complete mode
+* company-mode, (global-company-mode) , 
+* ac-geiser
+
+```lisp
+;; auto-complete
+(add-to-list 'load-path "~/.emacs.d/")
+(require 'auto-complete-config)
+(add-to-list 'ac-dictionary-directories "~/.emacs.d//ac-dict")
+(ac-config-default)
+```
+
+
+## load problem
+
+```
+> (library-directories)
+(("." . "."))                                                      > (library-extensions)
+((".chezscheme.sls" . ".chezscheme.so")                              (".ss" . ".so")                                                    (".sls" . ".so")                                                   (".scm" . ".so")                                                   (".sch" . ".so")) 
+
+```
+
+如何改变呢？
+export CHEZSCHEMELIBDIRS="/home/username/chez-lib:"
+export CHEZSCHEMELIBEXTS=".sc::.so:"
+在~/.bashrc 文件中,
+
+emacs Exception in load no such file or directory?
+emacs tries to require the session package
+
+(load "file"), 只要将路径设置正确就可以了!
+
+### markdown mode
+C-c C-s styling text
+C-c C-x, switching commands, toggling,
+C-c C-h, 获取help页面,
+
+```
+
+```
+
+
+
 
 
 

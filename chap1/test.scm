@@ -27,12 +27,13 @@
 
 (define buggy-remove
   (lambda (x ls)
-    (if (null? x)
+    (if (null? ls)
 	'()
-	(if (equal? (car ls) x)
+	(if (eq? (car ls) x)
 	    (buggy-remove x (cdr ls))
 	    (cons (car ls)
 		  (buggy-remove x (cdr ls)))))
     )
   )
+
 
