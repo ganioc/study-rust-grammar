@@ -2,7 +2,7 @@
 CC=rustc
 
 
-PROGS = hello condition reuse
+PROGS = hello condition reuse codeError
 
 all: $(PROGS)
 
