@@ -55,5 +55,18 @@ fn main(){
 
     let mut animal_counter = BTreeMap::new();
     animal_counter.insert("a", 1_usize);
-    println!("{}", animal_counter.get);
+    // println!("{}", animal_counter.get("a"));
+    // println!("{}", animal_counter.keys());
+    for(k,v) in &animal_counter{
+        println!("{} has been seen {} times", k, v);
+    }
+
+    let v = vec!["zero", "one", "two", "three", "four", "five"];
+    let odd_squared_sum = v.iter()
+        .enumerate()
+        .filter(|(i,_)|*i % 2 == 1) // i has type &usize
+        .map(|(i,_) | i*i)
+        .fold(0, |prev, cur| prev | cur);
+    print!("sum: {}\r\n", odd_squared_sum);
+
 }
