@@ -2,7 +2,7 @@
 CC=rustc
 
 
-PROGS = hello condition reuse codeError matching owner
+PROGS = hello condition reuse codeError matching owner collection
 
 all: $(PROGS)
 
