@@ -1,16 +1,11 @@
 [package]
-name = "project"
+name = "prj1"
 version = "0.1.0"
 edition = "2021"
-authors = ["yango <fake.com>"]
+
+[lib]
+name = "prj1"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-
-
-[dev-dependencies]
-prj1 = { path = "./prj1" }
-
-
-[workspace]
