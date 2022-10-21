@@ -10,7 +10,6 @@ authors = ["yango <fake.com>"]
 
 
 [dev-dependencies]
-prj1 = { path = "./prj1" }
 
 
 [workspace]
