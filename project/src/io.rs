@@ -4,7 +4,9 @@ use std::net::{ Shutdown, TcpListener, TcpStream};
 use std::io::{ BufReader, BufWriter};
 use std::fs::File;
 
-
+/// 
+/// This function just print itself
+/// 
 pub fn read_it(){
     println!("I will read it!");
 }
