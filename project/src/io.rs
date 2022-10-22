@@ -126,3 +126,66 @@ pub fn run_main_account(){
     assert_eq!(output, "Account (Arthur)");
 }
 
+pub fn add(a: usize, b: usize) -> usize{
+    a+b
+}
+
+#[cfg (test)]
+mod tests_for_io {
+    use super::*;
+
+    #[test]
+    fn it_works(){
+        let result = 2 + 2;
+        assert_eq!(result, 4);
+    }
+    #[test]
+    fn it_jumps(){
+        let jumping:i32 = 15 -12;
+        assert_ne!(jumping,4);
+    }
+    #[test]
+    #[should_panic (expected = "attempt to add with overflow")]
+    fn test_add_invalid_inputs(){
+        let result = add(usize::MAX, 1+1);
+    }
+}
+
+// #[feature(test)]
+// pub fn bubble_sort(collection:&mut[i32]){
+//     for _ in 0..collection.len(){
+//         for i in 1..collection.len(){
+//             if collection[i - 1] > collection[i] {
+//                 let tmp = collection[i];
+//                 collection[i] = collection[i - 1];
+//                 collection[i - 1] = tmp;
+//             }
+//         }
+//     }
+// }
+
+// pub fn std_sort(collection:&mut[i32]){
+//     collection.sort_unstable();
+// }
+// #[cfg(test)]
+// mod tests {
+//     // extern crate test;
+//     use super::*;
+//     use test::Bencher;
+//     #[bench]
+//     fn bench_bubble_sort_1k_desc(b: &mut Bencher){
+//         let items: Vec<i32> = (0..1_1000).rev().collect();
+//         b.iter(||bubble_sort(&mut items.clone()))
+//     }
+//     #[bench]
+//     fn bench_bubble_sort_5k_desc(b:&mut Bencher){
+//         let items: Vec<i32> = (0..5_000).rev().collect();
+//         b.iter(||bubble_sort(&mut items.clone()))
+//     }
+
+// }
+
+
+
+
+
