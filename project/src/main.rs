@@ -3,12 +3,13 @@ use std::collections::{BTreeMap, HashSet};
 mod front_of_house;
 mod back_of_house;
 mod io;
+mod mcaro;
 
 use back_of_house::print_back_house;
 use front_of_house::{ hosting::inner_hosting};
 use io::{ read_it, run_main_client, run_main_svr, run_main_file, run_formatting, run_main_account};
 use std::env;
-
+use mcaro::run_mcaro_main;
 
 
 fn main() {
@@ -46,6 +47,9 @@ fn main() {
 
     // print_prj1();
     read_it();
+
+    run_mcaro_main();
+
 
     if arguments[1].eq("client") {
         println!("It's a client");
