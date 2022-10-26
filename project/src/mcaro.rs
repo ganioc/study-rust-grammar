@@ -51,10 +51,10 @@ macro_rules! key_value {
     };
 }
 
-#[proc_macro]
-pub fn print_info(_item:TokenStream) -> TokenStream{
-    "fn print_info() {println!(\"Hello!\");}".parse().unwrap()
-}
+// #[proc_macro]
+// pub fn print_info(_item:TokenStream) -> TokenStream{
+//     "fn print_info() {println!(\"Hello!\");}".parse().unwrap()
+// }
 
 pub fn run_mcaro_main(){
     println!("two is: {}", two!());

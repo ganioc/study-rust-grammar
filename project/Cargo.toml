@@ -8,6 +8,7 @@ authors = ["yango <fake.com>"]
 
 [dependencies]
 reqwest = "0.11"
+procmacro = { path="../procmacro" }
 
 [dev-dependencies]
 

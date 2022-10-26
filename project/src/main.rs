@@ -11,6 +11,19 @@ use io::{ read_it, run_main_client, run_main_svr, run_main_file, run_formatting,
 use std::env;
 use mcaro::run_mcaro_main;
 
+use procmacro::{print_info};
+use procmacro::HelloFn;
+#[derive(HelloFn)]
+struct Greeter;
+use procmacro::inspect;
+
+#[inspect]
+use std::collections::HashMap;
+#[inspect(stdout)]
+fn abc() -> usize {
+    let a = 10;
+    100 + 10
+}
 
 fn main() {
     println!("Hello, world!");
@@ -50,6 +63,12 @@ fn main() {
 
     run_mcaro_main();
 
+    println!("print_info: {}", "print_info");
+    print_info!();
+    println!("print_info: {:?}", &print_info());
+
+    let b = Greeter{};
+    println!("Hi: Greeter: {:?}", &b.hello());
 
     if arguments[1].eq("client") {
         println!("It's a client");
