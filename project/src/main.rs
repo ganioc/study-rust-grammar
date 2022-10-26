@@ -4,6 +4,7 @@ mod front_of_house;
 mod back_of_house;
 mod io;
 mod mcaro;
+mod boxheap;
 
 use back_of_house::print_back_house;
 use front_of_house::{ hosting::inner_hosting};
@@ -13,6 +14,10 @@ use mcaro::run_mcaro_main;
 
 use procmacro::{print_info};
 use procmacro::HelloFn;
+use boxheap::run_main_box;
+
+
+
 #[derive(HelloFn)]
 struct Greeter;
 use procmacro::inspect;
@@ -69,6 +74,8 @@ fn main() {
 
     let b = Greeter{};
     println!("Hi: Greeter: {:?}", &b.hello());
+
+    run_main_box();
 
     if arguments[1].eq("client") {
         println!("It's a client");
