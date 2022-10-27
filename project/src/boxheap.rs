@@ -1,7 +1,15 @@
 use std::io::Result;
 
-type ConnectionFactoryFn<T> = Box<dyn Fn(host:String) -> Result<T>>;
-
+type ConnectionFactoryFn<T> = Box<dyn Fn(host:String) -> Result<T> + Send>;
+fn connect_and_read<T>(hosts: &[&str], factory: ConnectionFactoryFn<T>) -> Result<Vec<String>> {
+    let contents = vec![];
+    for host in hosts {
+        let conn = factory(*host)?;
+        let content = conn.read_to_string()?;
+        contents.push(content);
+    }
+    Ok(contents)
+}
 
 fn print_hex(data: Box<u128>){
     println!("Your data in hex: 0x{:x}", *data);
