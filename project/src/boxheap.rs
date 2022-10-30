@@ -6,10 +6,10 @@ use std::rc::Rc;
 use std::fmt;
 use std::sync::Arc;
 use std::thread;
-
+use std::string::String;
 
 // 这个地方总是会出问题，不知道如何修改,
-// type ConnectionFactoryFn<T> = Box<dyn Fn(host:String) -> Result<T>>;
+// type ConnectionFactoryFn<T> = Box<dyn Fn()>;
 
 
 fn print_hex(data: Box<u128>){
