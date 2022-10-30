@@ -4,6 +4,9 @@ use std::marker::PhantomData;
 use std::ptr::NonNull;
 use std::rc::Rc;
 use std::fmt;
+use std::sync::Arc;
+use std::thread;
+
 
 // 这个地方总是会出问题，不知道如何修改,
 // type ConnectionFactoryFn<T> = Box<dyn Fn(host:String) -> Result<T>>;
@@ -52,6 +55,7 @@ struct  ApplicationData{
 }
 
 
+
 pub fn run_main_box(){
     print_hex(Box::new(1535));
     let p = Box::new(Person{});
@@ -63,5 +67,8 @@ pub fn run_main_box(){
     drop(cache);
     println!("App data 1: {}", app_data_1.cache);
     println!("App data 2: {}", app_data_2.cache);
+    // thread::spawn(move || {
+    //     println!("App data 2: {}", app_data_2.cache);
+    // }).join().unwrap();
 
 }
