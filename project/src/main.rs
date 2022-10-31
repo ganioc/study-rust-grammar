@@ -1,3 +1,5 @@
+include!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/bindings.rs"));
+
 use std::collections::{BTreeMap, HashSet};
 
 mod front_of_house;
@@ -101,6 +103,9 @@ fn main() {
         println!("Unknown arguments: {}", arguments[1]);
     }
 
-    
+    unsafe{
+        add(1,2);
+        multiply(2,2);
+    }
 
 }
