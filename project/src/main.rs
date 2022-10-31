@@ -1,3 +1,5 @@
+include!(concat!(env!("CARGO_MANIFEST_DIR"), "/src/bindings.rs"));
+
 use std::collections::{BTreeMap, HashSet};
 
 mod front_of_house;
@@ -5,6 +7,8 @@ mod back_of_house;
 mod io;
 mod mcaro;
 mod boxheap;
+mod threading;
+mod myasync;
 
 use back_of_house::print_back_house;
 use front_of_house::{ hosting::inner_hosting};
@@ -15,8 +19,8 @@ use mcaro::run_mcaro_main;
 use procmacro::{print_info};
 use procmacro::HelloFn;
 use boxheap::run_main_box;
-
-
+use threading::run_main_threading;
+use myasync::run_main_async;
 
 #[derive(HelloFn)]
 struct Greeter;
@@ -77,6 +81,10 @@ fn main() {
 
     run_main_box();
 
+    run_main_threading();
+
+    run_main_async();
+
     if arguments[1].eq("client") {
         println!("It's a client");
         run_main_client();
@@ -95,6 +103,9 @@ fn main() {
         println!("Unknown arguments: {}", arguments[1]);
     }
 
-    
+    unsafe{
+        add(1,2);
+        multiply(2,2);
+    }
 
 }
