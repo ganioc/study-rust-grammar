@@ -164,6 +164,8 @@ an automated mechanism for printing messages,
 
 ```
 
+
+
 ## Advanced techniques
 (debug)
 ?
@@ -213,9 +215,10 @@ C-c C-s styling text
 C-c C-x, switching commands, toggling,
 C-c C-h, 获取help页面,
 
-```
+C-h C-a, Emacs的帮助页面,
 
-```
+Ctrl-Tab, switch tabs in Windows Terminal,
+
 
 
 

@@ -640,9 +640,80 @@ x
 Procedures are normally called using the application form, as in (+ 1 2), but sometimes we need to call a procedure with argument values that have already been assembled into a list. The standard procedure **apply** is provided for this purpose. It takes a procedure and a list and returns the result of calling the procedure with the values given in the list.
 
 ```
+> (apply + '(1 2))
+3
+> (define abc '(a b c))
+> (apply cons (cdr abc))
+(b . c)
+> (apply apply (list procedure? (list apply)))
+#t
+```
 
+### 1.3.1 lambda
+We have seen that Scheme supplies a number of standard procedure. It is also possible for the user to create new procedures, which may not be bound to variables. The special form for creating new procedures is *lambda*. Its most common syntax is
+
+(lambda formals body)
+
+Here formals is a (possibly empty) list of variables, and body is any expression. The listed variables are said to be formal parameters, or bound variables, of the procedure. In many languages, type information must be provided for formal parameters. However, Scheme automatically keeps track of types at run time, so type declarations are not required. (This is more flexible and simplifies code, but has the disadvantage that type errors are not detected until run time, increasing run-time overhead. We shall have more to say about types in chapter 3.) When the procedure is called, the formal parameters (if any) are first bound to (associated with) the arguments, and then the body is evaluated. Within the body, the argument values may be obtained by variables that correspond to the formal parameters. Lambda bindings are not accessible outside the body of the procedure: they are said to be **local** to the procedure's body.
+
+For example, a procedure that adds two to its argument may be created by evaluating the expression:
+
+(lambda (n) (+ n 2))
+
+This expression does not give the procedre a name. Naming is accomplished by another expression, such as a define expression, if desired, however, a procedre may be applied immediately, passed as an argument, or stored in a data structure without ever being named.
 
 ```
+> ((lambda (n) (+ n 2)) 4)
+6
+> (list (lambda (n) (+ n 2)) 6)
+(#<Procedre> 6)
+> (define add2 (lambda (n) (+ n 2)))
+> (add2 6)
+8
+> (define select
+	(lambda (b lst)
+	(if b
+		(car lst)
+		(cadr lst))))
+> (select #f '(a b))
+b
+> ((select #t (list cdr car))
+	'(a b c))
+(b c)
+```
+
+Procedures without names, which are not the binding of a variable, are said to be anonymous. In most other languages, procedures are never anonymous: they may be created only via declarations that name them. (Of course anonymous is relative to context: if an anonymous procedure is bound to a parameter via procedure call, it is not anonymous in the context of the called procedure.)
+
+Anonymous procedures are often used as arguments. We illustrate this using the procedures map and andmap, which generally take two arguments: a procedure and a list. The list may be of any length, and the procedure must take one argument. The procedure **map** builds a new list whose elements are obtained by calling the procedure with the elements of the original list. The procedure andmap applies the procedure to each element of the list and returns true if all are true. Otherwise it returns false.
+
+```
+> (map (lambda (n) (+ n 2)) '(1 2 3 4 5))
+(3 4 5 6 7)
+> (define add2
+	(lambda (n)
+		(+ n 2)))
+> (map add2 '(1 2 3 4 5))
+(3 4 5 6 7)
+> (andmap number? '(1 2 3 4 5))
+#t
+> (andmap number? '(1 2 3 4 5))
+#t
+> (map null? '((a) () () (3)))
+(#f #t #t #f)
+> (andmap null? '((a) () () (3)))
+#f
+> (map car '((a b) (c d) (e f)))
+(a c e)
+> (map list '(a b c d))
+((a) (b) (c) (d))
+> (map (lambda (f) (f '(a b c d)))
+       (list car cdr cadr cddr caddr))
+(a (b c d) b (c d) c)
+
+```
+
+### 1.3.2 First-Class Procedures
+第一类过程,
 
 
 
