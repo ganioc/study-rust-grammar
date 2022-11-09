@@ -195,8 +195,14 @@ To inspet the error contiuation, stack, at the point where the error occurred.
 
 ```
 > (library-directories)
-(("." . "."))                                                      > (library-extensions)
-((".chezscheme.sls" . ".chezscheme.so")                              (".ss" . ".so")                                                    (".sls" . ".so")                                                   (".scm" . ".so")                                                   (".sch" . ".so")) 
+(("." . "."))
+> (library-extensions)
+((".chezscheme.sls" . ".chezscheme.so")
+(".ss" . ".so")
+(".sls" . ".so")
+(".scm" . ".so")
+(".sch" . ".so")) 
+
 
 ```
 
@@ -204,11 +210,59 @@ To inspet the error contiuation, stack, at the point where the error occurred.
 export CHEZSCHEMELIBDIRS="/home/username/chez-lib:"
 export CHEZSCHEMELIBEXTS=".sc::.so:"
 在~/.bashrc 文件中,
+测试一下这个。
 
 emacs Exception in load no such file or directory?
 emacs tries to require the session package
 
 (load "file"), 只要将路径设置正确就可以了!
+这是什么问题呢？又在Ubuntu机子上面复现了。
+错误信息: Exception in load: failed for no such file or directory
+解决办法: 需要定义source-directories, 来重新定义set of directories searched for source or object files, when a file is loaded via load.
+(load "/mnt/data/project/git-books/eopl-gitbook/chap1/test.scm")
+这样就可以了。总觉得没有完全解决这个问题。
+
+How to execute via (load) access it's own file path?
+实际上如果目录在~/下面的话，似乎就没有问题了。可以load test.scm.
+
+Chez寻找文件的搜索路径, include, load会使用source-directories. 在REPL里load *.scm文件。
+
+
+Is it expected that the file is not found despite the path being in 'library-directories'?
+Is there a way to set at system level a path to be added to 'source-directories'?
+
+library-directories,
+with-source-path'
+schemerc file?
+
+```
+(source-directories '("." "/location/of/types"))
+
+```
+ chez并没有提供设置soource-directories的方法，
+
+ (current-directory)
+
+#### compiler and loader,
+eval, compile, compile-file, load,
+
+The data in case the machine code produced by the compiler or loaded from a compiled file written by one thread is not necessarily available immediately in other threads.
+
+##### source path handling,
+list value of the source-directories parameters, How to find the source-directories? It doesnt function in other disk.
+
+Use an absolute path for the file or use source-directories to redefine the set of directories searched for source or object files when a file is loaded via load.
+
+The parameter source-directories determines the set of directories searched for source files not identified by absolute path names.
+
+```scheme 
+(current-directory)
+;; 打印当前目录,居然能识别出项目目录，这个就非常奇怪了!是因为识别了.git目录吗?
+;; 一种迂回的方式就是去生成绝对路径，使用current-directory 来保持灵活性
+(string-append (current-directory) "/" "file.scm")
+
+```
+忽然发现可以了。绝对路径，
 
 ### markdown mode
 C-c C-s styling text
