@@ -4,3 +4,6 @@
 ## 2nd book
 < Rust Primer >
 
+## test rust library in snarkvm
+
+
