@@ -3,6 +3,9 @@ extern crate ferris_says;
 mod variable;
 use variable::test_variable;
 
+mod ownership;
+use ownership::test_ownership;
+
 use ferris_says::say;
 use rand::Rng;
 // use std::cmp::Ordering;
@@ -43,6 +46,8 @@ fn main() {
     // }
 
     test_variable();
+
+    test_ownership();
 
     let stdout = stdout();
     let message = String::from("Hello fellow Rustaceans!");
