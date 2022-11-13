@@ -83,6 +83,25 @@ pub fn test_ownership() {
     let some_number = Some(5);
     let some_char = Some('e');
     // let absent_number = None;
+
+    let mut v: Vec<i32> = Vec::new();
+    v.push(5);
+    println!("v is {:?}", v);
+
+    let v1 = vec![1, 2, 3, 4, 5];
+    let third = &v1[2];
+    println!("Third element is {}", third);
+
+    let third = v1.get(2);
+    match third {
+        Some(third) => println!("Third ele is {}", third),
+        None => println!("No third ele"),
+    }
+
+    for i in &v1 {
+        println!("{}", i);
+    }
+    // panic!("Crash!!");
 }
 fn area(width: u32, height: u32) -> u32 {
     width * height

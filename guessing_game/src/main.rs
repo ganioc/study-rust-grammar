@@ -6,6 +6,9 @@ use variable::test_variable;
 mod ownership;
 use ownership::test_ownership;
 
+mod handling;
+use handling::test_error_handling;
+
 use ferris_says::say;
 use rand::Rng;
 // use std::cmp::Ordering;
@@ -48,6 +51,8 @@ fn main() {
     test_variable();
 
     test_ownership();
+
+    test_error_handling();
 
     let stdout = stdout();
     let message = String::from("Hello fellow Rustaceans!");
