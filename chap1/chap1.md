@@ -714,6 +714,32 @@ Anonymous procedures are often used as arguments. We illustrate this using the p
 
 ### 1.3.2 First-Class Procedures
 第一类过程,
+A value is said to be **first class** if it may be passed to and returned from procedures and stored in data structures. In Scheme, all values are first class, including procedures. In other languages, simple values such as numbers are first class, compound values such as records and arrays are sometimes first class, and procedures are almost never first class. Though it is usually possible to pass procedures as arguments, it is often impossible to return them as values or store them in data structures. (See chapter 10 for a discussion of the implementation of such languages.) First class procedure contribute greatly to the expressive power of a language.
 
+For an example of a procedure that takes procedural arguments and returns a procedural result, consider the problem of defining a procedure that performs functional composition. Assume that f and g are two functions of one argument such that Range(g) less equal than Domain(f). Then the composition of f and g, f x g, is define by the equation:
 
+(f x g)(x) = f(g(x))
+
+The assumption about the range of g and the domain of f ensures that every possible result from g is a possible argument to f. It is straightforward to define composition in Scheme.
+
+```
+>(define compose
+    (lambda (f g)
+      (lambda (x)
+	(f (g x)))))
+> (define add4 (compose add2 add2))
+> (add4 5)
+9
+> ((compose car cdr) '(a b c d))
+b
+> ((compose list (compose cdr cdr)) '(a b c d))
+((c d))
+
+```
+### Exercise 1.3.1
+What is unusual about the following expression?
+
+```
+
+```
 

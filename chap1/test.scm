@@ -36,6 +36,9 @@
     )
   )
 
+(define add2
+  (lambda (a)
+    (+ a 2)))
 
 
 
