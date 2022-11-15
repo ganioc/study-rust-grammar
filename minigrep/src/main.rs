@@ -2,12 +2,17 @@ use std::{env,  process};
 
 use minigrep::{Config, run};
 
+
 // % cargo run -- searchstring poem.txt
 
 fn main() {
     println!("Hello, world! ====>");
 
     minigrep::shirt_run();
+    // minigrep::concurr_run();
+    minigrep::pattern_run();
+
+    // concurr_run();
 
     let args: Vec<String> = env::args().collect();
 

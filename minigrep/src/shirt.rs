@@ -74,6 +74,15 @@ impl<T> Deref for MyBox<T> {
     }
 }
 
+struct CustomSmartPointer{
+    data: String,
+}
+impl Drop for CustomSmartPointer{
+    fn drop(&mut self){
+        println!("Dropping CustomSmartPointer with data`{}`", self.data);
+    }
+}
+
 pub fn shirt_run() {
     let store = Inventory {
         shirts: vec![ShirtColor::Blue, ShirtColor::Red, ShirtColor::Blue],
@@ -149,6 +158,15 @@ pub fn shirt_run() {
 
     let z = MyBox::new(x);
     assert_eq!(5, *z);
+
+    let c = CustomSmartPointer{
+        data: String::from("custom smart pointer"),
+    };
+    let d = CustomSmartPointer{
+        data: String::from("Custom smart pointer No. 2"),
+    };
+    println!("custom smart pointer created");
+
 
 
 }
