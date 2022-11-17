@@ -3,7 +3,7 @@ use std::time::Duration;
 use std::sync::mpsc;
 use std::sync::Mutex;
 use std::sync::{Arc};
-use std::rc::Rc;
+
 
 pub fn concurr_run(){
     let v = vec![1,2,3,4];
@@ -25,7 +25,7 @@ pub fn concurr_run(){
 
     let (tx, rx) = mpsc::channel();
 
-    let handle_channel = thread::spawn(move ||{
+    let _handle_channel = thread::spawn(move ||{
         let val = String::from("hi");
         tx.send(val).unwrap();
 

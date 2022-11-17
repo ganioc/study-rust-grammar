@@ -34,7 +34,7 @@ pub fn fibonacci_new(n: u64) -> u64 {
     }
 }
 
-pub fn add_three(a:i32) -> i64{
+pub fn add_three(_a:i32) -> i64{
     let mut a:i64 = 0;
     for  i in 1..10000000000000 {
         a += i;

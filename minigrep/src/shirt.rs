@@ -159,10 +159,10 @@ pub fn shirt_run() {
     let z = MyBox::new(x);
     assert_eq!(5, *z);
 
-    let c = CustomSmartPointer{
+    let _c = CustomSmartPointer{
         data: String::from("custom smart pointer"),
     };
-    let d = CustomSmartPointer{
+    let _d = CustomSmartPointer{
         data: String::from("Custom smart pointer No. 2"),
     };
     println!("custom smart pointer created");
