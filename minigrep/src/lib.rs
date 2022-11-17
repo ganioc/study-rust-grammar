@@ -8,6 +8,32 @@ use std::env;
 // #[cfg(test)]
 
 
+#[inline]
+pub fn fibonacci(n:u64) -> u64{
+    match n {
+        0 => 1,
+        1 => 1,
+        n => fibonacci(n-1) + fibonacci(n-2),
+    }
+}
+
+pub fn fibonacci_new(n: u64) -> u64 {
+    let mut a = 0;
+    let mut b = 1;
+
+    match n {
+        0 => b,
+        _ => {
+            for _ in 0..n {
+                let c = a + b;
+                a = b;
+                b = c;
+            }
+            b
+        }
+    }
+}
+
 pub fn add_three(a:i32) -> i64{
     let mut a:i64 = 0;
     for  i in 1..10000000000000 {
@@ -144,7 +170,7 @@ where
 mod tests {
     use super::*;
     use std::cell::RefCell;
-    use test::Bencher;
+    // use test::Bencher;
     struct  MockMessenger {
         sent_messages: RefCell<Vec<String>>,
     }
@@ -215,8 +241,8 @@ Trust me.";
         assert_eq!(mock_messenger.sent_messages.borrow().len(),1);
 
     }
-    #[bench]
-    fn benchmark(bencher:&mut Bencher){
-        bencher.iter(||add_three(12));
-    }
+    // #[bench]
+    // fn benchmark(bencher:&mut Bencher){
+    //     bencher.iter(||add_three(12));
+    // }
 }

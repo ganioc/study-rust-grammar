@@ -13,4 +13,11 @@ opt-level = 0
 [profile.release]
 opt-level = 3
 
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "fib"
+path = "benches/fib/fib.rs"
+harness = false
 
