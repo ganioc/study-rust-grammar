@@ -740,6 +740,9 @@ b
 What is unusual about the following expression?
 
 ```
+((lambda (x)
+	(list x (list (quote quote) x)))
+	)
 
 ```
 
