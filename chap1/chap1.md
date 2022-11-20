@@ -742,7 +742,12 @@ What is unusual about the following expression?
 ```
 ((lambda (x)
 	(list x (list (quote quote) x)))
-	)
+  (quote (lambda (x)
+          (list x (list (quote quote) x)))))
 
 ```
+
+Try to figure out what it does without typing it into a Scheme system. Can similiar behavior be achieved without using list?
+
+#### answer:
 
