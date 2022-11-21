@@ -751,3 +751,67 @@ Try to figure out what it does without typing it into a Scheme system. Can simil
 
 #### answer:
 
+### Exercise 1.3.4
+Write a procedure curry2 that takes a procedure of two arguments and returns a curried version of the procedure that takes the first argument and returns a procedure that takes the second argument. For example,
+
+```
+> (((curry2 +) 1) 2)
+3
+> (define consa ((curry2 cons) 'a))
+> (consa '(b))
+(a b)
+```
+#### answer
+```
+(define curry2
+  (lambda (x)
+    (lambda (y)
+      (lambda (z)
+        (x y z)))))
+
+```
+
+### Exercise 1.3.5
+Write a curried version of **compose**. Can you think of a use for it?
+
+#### [answer]
+The old definition of compose is : 
+```
+(define (compose f g)
+	(lambda (x)
+		(f (g x))))
+```
+
+It seems curry2 in question above works the same as compose.
+
+### Exercise 1.3.6
+A language could be designed like ML, so that if a procedure is passed fewer arguments that it expects, it simply returns a procedure that takes the rest of the arguments. Thus procedures are "automatically" curried. What are the advantages and disadvantages of this feature?
+
+#### [answer]
+* advantage: adaptive
+* disadvantage: polymorphism will not work. Functions can not be distinguished by the number of arguments any more.
+
+### Variable Arity Procedures
+The **arity** of a procedure is the number of arguments that it takes. Most procedures, including those that result from evaluating lambda expressions of the form introduced so far, have fixed arity. An error message results if a fixed arity procedure is invoked with the wrong number of arguments. Examples of procedures that can take a variable number of arguments are the standard procedures **list**, **vector**, and **string**. It is occasionally necessary to define new procedures of variable arity. This is accomplished with a lambda expression of the form
+
+(lambda formal body)
+
+where **formal** is a single variable. When the resulting procedure is invoked, this variable is bound to a list of the argument values. The simplest example is (lambda x x), which is equivalent to **list**. A more interesting example is the following procedure, which may be invoked with two or more arguments, in which case it behaves like +, or with one argument, in which case it behaves like a curried +.
+
+```
+> (define plus
+	(lambda x
+		(if (null? (cdr x))
+			(lambda (y) (+ (car x) y))
+			(apply + x))))
+> (plus 1 2)
+3
+> ((plus 1) 2)
+3
+
+```
+### Exercise 1.3.7
+Define a version of compose that takes as arguments either two or three procedures(of one argument) and composes them. The composition of three procedures is specified by this equation:
+
+(compose f g h) => (compose f (compose g h))
+

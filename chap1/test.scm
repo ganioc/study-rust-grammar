@@ -41,4 +41,15 @@
     (+ a 2)))
 
 
+(define curry2
+  (lambda (x)
+    (lambda (y)
+      (lambda (z)
+	(x y z)))))
+
+(define plus
+  (lambda x
+    (if (null? (cdr x))
+	(lambda (y) (+ (car x) y))
+	(apply + x))))
 
