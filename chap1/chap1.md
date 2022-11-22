@@ -815,3 +815,14 @@ Define a version of compose that takes as arguments either two or three procedur
 
 (compose f g h) => (compose f (compose g h))
 
+## 1.4 Summary
+Scheme programs consist mainly of expressions, which are evaluated for their value, rather than statements, which are evaluated only for their effect on the computation. Variable references and literals are the simplest forms of expression; they do not contain subexpressions, as other forms do. Procedure call expressions are the most common expressions in Scheme.
+
+Programs are composed of definitions, introduced by the keyword **define**, and expressions. A read-eval-print loop provides a convenient interactive programming environment, but such programming environment features are generally not part of a language specification.
+
+The special form **if** provides conditional evaluation. It cannot be a procedure , because it is improper to evaluate both its "then" expressoin and "else" expression.
+
+Scheme supports a number of primitive data types, including numbers, booleans, characters, symbols, pairs, strings, and vectors. Pairs and vectors are compound data types that contain data elements. Lists are an important type derived from pairs and the empty list. New procedures are created by the **lambda** special form.
+
+Procedures, and all other data object in Scheme, are first class: they may be stored in data structures and returned from procedures as well as passed to procedures. They may also be anonymous: they need not be bound to a variable at the point of their creation.
+
