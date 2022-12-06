@@ -51,7 +51,27 @@ Sticking to this recipe guarantees that $ S $ consists precisely of those values
 The data type list-of-numbers is the smallest set of values satisfying the two properties:
 
 1. The empty list is a list-of-numbers, and
-2. If $ l $ is a list-of-numbers and n is a number, then the pair $ (n \space . \space l) $ is a list-of-numbers.
+2. If $ l $ is a list-of-numbers and $ n $ is a number, then the pair $ (n \space . \space l) $ is a list-of-numbers.
 
 From this definition we infer the following:
+
+1. () is a list-of-numbers, because of property 1.
+2. $ (14 \space . \space ()\space ) $ is a list-of-numbers, because 14 is a number and () is a list-of-numbers.
+3. $ (3\space.\space(14\space. \space ())) $ is a list-of-numbers, because 3 is a number and $ (14\space.\space())$ is a list-of-numbers.
+4. $(-7\space.\space(3\space.\space(14\space.\space())))  $ is a list-of-numbers, because $-7$ is a number and $(3\space.\space(14\space.\space()))$ is a list-of-numbers.
+5. Nothing is a list-of-numbers unless it is built in this fashion.
+
+Converting from dot notation to list notation, we see that $()$, $(14)$, $(3 \space 14)$,and $(-7\space3\space14)$ are all members of list-of-numbers.
+
+### Backus-Naur Form and Syntactic Derivations
+The previous example was fairly straightforward, but it is easy to imagine how the process of describing more complex data types might become quite cumbersome. To remedy this, a notation has been developed to express the same ideas more concisely: **Backus-Naur Form** or **BNF**. We frequently use it to describe the structure of a data type. BNF is also widely used in specifying the syntax of programming languages.
+
+BNF can be used to inductively define a number of sets at once. These sets are called **syntactic categories**, or sometimes **nonterminals**, and are customarily written with angle brackets around the name of the set: <list-of-numbers>. (When no ambiguity results, we shall sometimes refer informally to syntactic categories without using angle brackets or dashes: "list of numbers.") Each syntactic category is defined by a finite set of **rules**, or **productions**. Each rule asserts that certain values must be in the syntactic category.
+
+The BNF definition of list-of-numbers has two rules that correspond to the two properties.
+
+$$ <list-of-numbers> ::=() \\
+
+    <list-of-numbers>::=(<number>.<list-of-numbers>) \\
+$$
 
