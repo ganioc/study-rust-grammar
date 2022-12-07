@@ -1,3 +1,7 @@
+
+chap 2
+========
+
 # 2 Induction , Recursion, and scope
 This chapter introduces the fundamental technique of recursive programming, along with its relation to the mathematical technique of induction. The notion of scope, which plays a primary role in programming language, is also presented. Finally, the material in this chapter will improve your facility with the tools introduced in chapter 1. Section 2.1 and section 2.2 introduce techniques for inductively specifying data structures and show how such specifications may be used to guide the construction of recursive programs. Section 2.3 then introduces the notions of variable binding and scope.
 
@@ -70,8 +74,107 @@ BNF can be used to inductively define a number of sets at once. These sets are c
 
 The BNF definition of list-of-numbers has two rules that correspond to the two properties.
 
-$$ <list-of-numbers> ::=() \\
-
-    <list-of-numbers>::=(<number>.<list-of-numbers>) \\
 $$
+\begin{aligned}
+\langle list\text{--}of\text{--}numbers \rangle &::=()  \\
+
+    \langle list\text{--}of\text{--}numbers \rangle &::=(\langle number\rangle \space . \space \langle list\text{--}of\text{--}numbers \rangle )  \\
+\end{aligned}
+
+$$
+
+The first rule says that the empty list is in $ \langle list\text{--}of\text{--}numbers \rangle $ , and the second says that if $n$ is in $ \langle number \rangle $ and $l$ is in $ \langle list\text{--}of\text{--}numbers \rangle$, then $(n\space . \space l)$ is in $ \langle list\text{--}of\text{--}numbers \rangle$.
+
+Each rule begins by naming the syntactic category being defined, followed by ::= (read $is$ ). The right-hand side of each rule specifies a method for constructing members of the syntactic category in terms of other syntactic categories and $ terminal\space symbols$, such as the left and right parentheses, and the period in the previous example.
+
+Often some syntactic categories mentioned in a BNF rule are left undefined, such as $\langle number \rangle$. Defining all categories would needlessly complicate the rule if it is safe to assume the reader knows what some of the categories are.
+
+BNF is often extended with a few notational shortcuts. One can write a set of rules for a single syntactic category by writing the left-hand side and ::= just once, followed by all the right-hand sides separated by the special symbol $|$ (vertical bar, read $or$). A $\langle list\text{--}of\text{--}numbers \rangle$ can then be defined by
+
+$$
+\begin{aligned}
+\langle list\text{--}of\text{--}numbers \rangle &::= () | (\langle number\rangle \space . \space \langle list\text{--}of\text{--}numbers \rangle )
+
+\end{aligned}
+
+$$
+
+$\quad$ Another shortcut is the $Kleene \space star$, expressed by the notation $\{...\}^*$. When this appears in a right-hand side, it indicates a sequence of any number of instances of whatever appears between the braces. This includes the possibility of no instances at all. Using the Kleene star, the definition of $\langle list\text{--}of\text{--}numbers \rangle$ in list notation is simply
+
+$$
+\begin{aligned}
+\langle list\text{--}of\text{--}numbers \rangle &::=  (\{\langle number\rangle\}^* )
+
+\end{aligned}
+
+$$
+
+$\quad$ If there are zero instances, we get the empty list. A variant of the star notation is $Kleene plus \{... \}^+$, which indicates a sequence of $one$ or more instances. Substituting $^+$ for $^*$ in the above example would define the syntactic category of nonempty lists of numbers. These notational shortcuts are just that $\text{--}$ it is always possible to do without them by using additional BNF rules.
+
+$\quad$ If a type is specified use BNF rules , a $syntactic \space derivation$ may be used to prove that a given data value is a member of the type. Such a derivation starts with the nonterminal corresponding to the type. At each step, indicated by an arrow $\Rightarrow$, a nonterminal is replace by the right-hand side of a corresponding rule, or with a known member of its syntactic class if the class was left undefined. For example, the previous demonstration that $(14\space.\space())$ is a list of numbers may be formalized with the following syntactic derivation:
+
+$$
+\begin{aligned}
+&\langle list\text{--}of\text{--}numbers\rangle \\
+\Rightarrow &(\langle number \rangle \space . \space \langle list\text{--}of\text{--}numbers\rangle ) \\
+\Rightarrow &(14 \space . \space \langle list\text{--}of\text{--}numbers\rangle) \\
+\Rightarrow &(14 \space . \space ()) \\
+\end{aligned}
+$$
+
+$\quad$ The order in which nonterminals are replaced is not significant. Thus another possible derivation of $(14 \space . \space ())$ is 
+
+$$
+\begin{aligned}
+&\langle list\text{--}of\text{--}numbers\rangle \\
+\Rightarrow &(\langle number \rangle \space . \space \langle list\text{--}of\text{--}numbers\rangle ) \\
+\Rightarrow &(\langle number \rangle \space . ()) \\
+\Rightarrow &(14 \space . \space ()) \\
+\end{aligned}
+$$
+
+### $\circ$ Exercise 2.1.1
+Write a syntactic derivation that proves $(-7 \space . \space (3 \space . \space (14 \space . \space ())))$ is a list of numbers. $\Box$
+
+### $\bold{2.1.3 \space using \space  BNF\space to  \space Specify \space Data}$
+
+The term $datum$ refers to any literal data representation. BNF may be used to specify concisely the syntactic category of data in Scheme. We have seen that numbers, symbols, booleans, and strings all have literal representations, which we associate with the syntactic categories $\langle number \rangle$, $\langle symbol \rangle$, $\langle boolean \rangle$, and $\langle string \rangle$, respectively. Section 1.2 informally introduced representations for lists, improper lists (which end with dotted pairs), and vectors. These compound data types contain components that may be numbers, symbols, booleans , strings , or other lists, improper lists or vectors. This is formally specified by the following BNF rules
+
+---
+
+$$
+\begin{aligned}
+\langle list \rangle &::= (\{\langle datum \rangle\}^*) \\
+\langle dotted\text{--}datum \rangle &::= (\{ \langle datum \rangle\}^+ \space . \space \langle datum \rangle ) \\
+\langle vector \rangle &::=  \# (\{ \langle datum \rangle \}^*) \\
+\langle datum \rangle &::= \langle number \rangle | \langle symbol \rangle | \langle boolean \rangle  \\
+&| \langle string \rangle | \langle list \rangle | \langle dotted\text{--}datum \rangle | \langle vector \rangle
+
+\end{aligned}
+$$
+
+---
+
+These four syntactic categories are all defined in terms of each other. This is legitimate because there are some simple possibilities for data that are not defined in terms of the other categories.
+
+$\quad$ To illustrate the use of this grammar, consider the following syntactic derivation proving that $(\#t \space (foo \space . \space ()) \space 3)$ is a datum.
+
+$$
+\begin{aligned}
+&\langle list \rangle \\
+\Rightarrow &(\langle datum \rangle \space \langle datum \rangle \space \langle datum \rangle) \\
+\Rightarrow &(\langle boolean \rangle \space \langle datum \rangle \space \langle datum \rangle) \\
+\Rightarrow &(\#t \space \langle datum \rangle \space \langle datum \rangle) \\
+\Rightarrow &(\#t \space \langle dotted\text{--}datum \rangle \space \langle datum \rangle) \\
+\Rightarrow &(\#t \space ( \{ \langle datum \rangle  \}^+ \space . \space \langle datum \rangle ) \space \langle datum \rangle) \\
+\Rightarrow &(\#t \space ( \langle symbol \rangle \space . \space \langle datum \rangle ) \space \langle datum \rangle) \\
+\Rightarrow &(\#t \space ( foo \space . \space \langle datum \rangle ) \space \langle datum \rangle) \\
+\Rightarrow &(\#t \space ( foo \space . \space \langle list \rangle ) \space \langle datum \rangle) \\
+\Rightarrow &(\#t \space ( foo \space . \space ())  \space \langle datum \rangle) \\
+\Rightarrow &(\#t \space ( foo \space . \space ())  \space \langle number \rangle) \\
+\Rightarrow &(\#t \space ( foo \space . \space ())  \space \langle 3 \rangle) \\
+\end{aligned}
+$$
+
+$\quad$ All three elements of the outer list were introduced at once. This shortcut was possible because the grammar uses a Kleene star. Of course, the Kleene star and plus notation could be eliminated by introducing new nonterminals and productions, and the three list elements would then be introduced with three derivation steps instead of one.
 
