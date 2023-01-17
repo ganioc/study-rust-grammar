@@ -203,4 +203,9 @@ $$
 
 $\quad$ Let us consider the BNF definitions of some other useful data types. Many symbol manipulation procedures are designed to operate on lists that contain only symbols and other similarly restricted lists. We formalize this notion with their rules:
 
+$$
+\begin{aligned}
 
+
+\end{aligned}
+$$
