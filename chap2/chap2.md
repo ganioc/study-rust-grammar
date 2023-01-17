@@ -178,3 +178,9 @@ $$
 
 $\quad$ All three elements of the outer list were introduced at once. This shortcut was possible because the grammar uses a Kleene star. Of course, the Kleene star and plus notation could be eliminated by introducing new nonterminals and productions, and the three list elements would then be introduced with three derivation steps instead of one.
 
+
+### $\circ$ Exercise 2.1.2
+Rewrite the $\langle datum \rangle$ grammar without using the Kleene star or plus. Then indicate the changes to the above derivation that are required by your grammar. $\Box$
+
+### $\circ$ Exercise 2.1.3 
+
