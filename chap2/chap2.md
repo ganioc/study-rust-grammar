@@ -205,7 +205,36 @@ $\quad$ Let us consider the BNF definitions of some other useful data types. Man
 
 $$
 \begin{aligned}
-
+\langle s\text{--}list \rangle &::= (\{\langle symbol\text{--}expression \rangle\}^*) \\
+\langle symbol\text{--}expression \rangle &::= \langle symbol \rangle | \langle s\text{--}list \rangle
 
 \end{aligned}
 $$
+
+The literal representation of an s-list contains only parentheses and symbols. 
+
+For example
+
+$ (a \space b \space c) $
+
+$ (an \space (((s\text{--}list)) \space (with \space lots) \space ((of) \space nesting)))$
+
+$\quad$ A binary tree with numeric leaves and interior nodes labeled with symbols may be represented using three-element lists for the interior nodes as follows:
+
+$ \langle tree \rangle \space ::= \space \langle number \rangle | (\langle symbol \rangle \space \langle tree \rangle )$
+
+Examples of such trees follow:
+
+$$
+\text{1} \hspace{50cm} \\
+\text{2} \hspace{50cm} \\
+(foo \space 1 \space 2) \hspace{50cm} \\
+(bar \space 1 \space (foo \space 1 \space 2)) \hspace{50cm} \\
+(bar \space (bar \space 1 \space (foo \space 1 \space 2)) (biz \space 4 \space 5)) \hspace{50cm} \\
+$$
+
+$\quad$ BNF rules are said to be *context free* because a rule defining a given syntactic category may be applied in any context that makes reference  to that syntactic category. Sometimes this is not restrictive enough. For example, a node in a binary search tree is either empty or contains a key and two subtrees.
+
+
+
+
