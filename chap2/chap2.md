@@ -178,9 +178,29 @@ $$
 
 $\quad$ All three elements of the outer list were introduced at once. This shortcut was possible because the grammar uses a Kleene star. Of course, the Kleene star and plus notation could be eliminated by introducing new nonterminals and productions, and the three list elements would then be introduced with three derivation steps instead of one.
 
-
 ### $\circ$ Exercise 2.1.2
 Rewrite the $\langle datum \rangle$ grammar without using the Kleene star or plus. Then indicate the changes to the above derivation that are required by your grammar. $\Box$
 
 ### $\circ$ Exercise 2.1.3 
+=======
+### $\circ$ Exercise 2.1.2
+Rewrite the $\langle datum \rangle$ grammar without using the **Kleene star** or **plus**. Then indicate the changes to the above derivation that are required by your grammar. $\square$
+
+### $\circ$ Exercise 2.1.3
+Write a syntactic derivation that proves $(a \space \text{\textquotedblleft}mixed\text{\textquotedblright} \#(bag \space (of \space . \space data)))$ is a datum , using either the grammar in the book or your grammar from the last exercise. What can you say about $(a\space . b \space . \space c)$ ? $\square$
+
+[答]
+
+$$
+\begin{aligned}
+&(a \space \text{\textquotedblleft}mixed\text{\textquotedblright} \space \#(bag \space (of \space . \space data))) \\
+\Rightarrow &(\langle datum \rangle \space \langle datum \rangle \space \langle datum \rangle) \\
+\Rightarrow &(\langle symbol \rangle \space \langle string \rangle \space \langle vector \rangle) \\
+\Rightarrow &(\langle list \rangle) \\
+\end{aligned}
+$$
+
+
+$\quad$ Let us consider the BNF definitions of some other useful data types. Many symbol manipulation procedures are designed to operate on lists that contain only symbols and other similarly restricted lists. We formalize this notion with their rules:
+
 
