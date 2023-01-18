@@ -1,13 +1,16 @@
 mod format;
 use format::{Structure, Deep, Person, MinMax};
+use crate::associate::run_associate;
 use crate::format::{MyList, reverse};
 
 mod types;
 use crate::function::run_function;
+use crate::modules::run_modules;
 use crate::types::{inspect,WebEvent, YourList, run_types};
 
 mod function;
-
+mod modules;
+mod associate;
 
 use std::{mem};
 
@@ -76,6 +79,10 @@ fn main() {
     run_types();
     
     run_function();
+
+    run_modules();
+
+    run_associate();
     
 }
 
