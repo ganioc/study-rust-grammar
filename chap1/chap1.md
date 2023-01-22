@@ -751,3 +751,84 @@ Try to figure out what it does without typing it into a Scheme system. Can simil
 
 #### answer:
 
+### Exercise 1.3.2
+Here is an implementation of cells.
+
+```
+(define cell-tag "cell")
+
+(define make-cell
+  (lambda (x)
+    (vector cell-tag x)))
+  
+(define cell?
+  (lambda (x)
+    (if (vector? x)
+      (vector-ref x 1)
+      (error "Invalid argument to cell-ref:" x))))
+```
+
+Fill in the values of the following transcript.
+
+```
+> (define c (make-cell 5))
+> c
+> (cell? c)
+
+> (cell-ref c)
+
+
+```
+
+### Exercise 1.3.3
+Consider two or three other languages you know or for which you can find documentation. What restrictions, if any, are imposed on procedures that keep them from being first class? Is it possible to create anonymous procedures?
+
+Here is an example of a procedure that takes a numeric values and returns a procedure.
+
+```
+(define f
+  (lambda (x)
+    (lambda (y)
+      (+ x y))))
+```
+
+When f is passed a number x it returns a procedure that takes a number and add x to it.
+
+```
+> (define new-add2 (f 2))
+> (new-add2 4)
+6
+```
+
+Here **new-add2** has the same behavior as the **add2** procedure defined earlier. So what is the point of defining **f**? If a computation requires generating many of these add-n procedures for different values of n, or if the values of n are unknown at the time the program is written, then a procedure like **f** is called for.
+
+```
+> (define add3 (f (+ 1 2)))
+> (add3 5)
+8
+> ((f 5) 6)
+11
+> (define g
+    (lambda (a)
+      (lambda (d)
+        (cons a d))))
+> ((g 'a) '(b c))
+(a b c)
+> (map (g 'a) '((b c) (1 2)))
+((a b c) (a 1 2))
+```
+Having functions of more than one argument is certainly convenient, but it is not absolutely necessary. Using the technique just illustrated, any procedure p of n >= 2 arguments can always be transformed into a procedure p' of one argument that returns a procedure of n-1 arguments such that
+
+((p' x1) x2 ... xn) = (p x1 ... xn)
+
+By repeating this transformation n-1 times, we obtain a procedure p'' such that
+
+(...((p'' x1) x2) ... xn) = (p x1 x2 ... xn)
+
+This transformation is known as **currying**. The procedures f and g above are curried versions of the addition and cons procedures, respectively. Of course if an existing procedure is to be replace by a curried version, all calls to the procedure must be changed.
+
+A curried version of a procedure normally takes the first argument first , but this is not always what is desired. The following example illustrates the use of a "reverse-curried" version of **cons**.
+
+```
+
+```
