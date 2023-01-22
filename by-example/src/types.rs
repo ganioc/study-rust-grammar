@@ -147,6 +147,19 @@ impl<'a> Default for Borrowed<'a> {
     }
 }
 
+fn elided_input(x: &i32) {
+    println!("elided_input: {}", x);
+}
+fn annotated_input<'a>(x: &'a i32) {
+    println!("annotated_input: {}", x);
+}
+fn elided_pass(x: &i32) -> &i32 {
+    x
+}
+fn annotated_pass<'a>(x: &'a i32) -> &'a i32 {
+    x
+}
+
 pub fn run_types() {
     let my_str = "hello";
     let my_string = String::from(my_str); // str to String,
@@ -258,6 +271,13 @@ pub fn run_types() {
 
     let b: Borrowed = Default::default();
     println!("b is {:?}", b);
+
+    let x_elided = 3;
+    elided_input(&x_elided);
+    annotated_input(&x_elided);
+
+    println!("elided_pass: {}", elided_pass(&x_elided));
+    println!("annotated_pass: {}", annotated_pass(&x_elided));
 
     println!("End of types\n\n");
 }
