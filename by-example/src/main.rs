@@ -1,8 +1,10 @@
 mod format;
 use crate::associate::run_associate;
 use crate::format::{reverse, MyList};
+use crate::macros::run_macros;
 use format::{Deep, MinMax, Person, Structure};
 
+mod macros;
 mod traits;
 mod types;
 use crate::function::run_function;
@@ -89,4 +91,6 @@ fn main() {
     run_associate();
 
     run_trait();
+
+    run_macros();
 }
