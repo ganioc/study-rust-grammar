@@ -2,6 +2,7 @@ mod format;
 use crate::associate::run_associate;
 use crate::format::{reverse, MyList};
 use crate::macros::run_macros;
+use crate::panics::run_panics;
 use format::{Deep, MinMax, Person, Structure};
 
 mod macros;
@@ -15,6 +16,7 @@ use crate::types::{inspect, run_types, WebEvent, YourList};
 mod associate;
 mod function;
 mod modules;
+mod panics;
 
 use std::mem;
 
@@ -93,4 +95,6 @@ fn main() {
     run_trait();
 
     run_macros();
+
+    run_panics();
 }
