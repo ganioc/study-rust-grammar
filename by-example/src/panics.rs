@@ -1,4 +1,7 @@
-use std::num::ParseIntError;
+use std::error;
+use std::fmt;
+use std::num;
+use std::{num::ParseIntError, vec};
 
 fn give_princess(gift: &str) {
     if gift == "snake" {
@@ -155,6 +158,38 @@ fn my_print(result: Result<i32, ParseIntError>) {
 
 type AliasedResult<T> = Result<T, ParseIntError>;
 
+fn double_first(vec: Vec<&str>) -> Result<Option<i32>, ParseIntError> {
+    let opt = vec.first().map(|first| first.parse::<i32>().map(|n| 2 * n));
+    opt.map_or(Ok(None), |r| r.map(Some))
+}
+
+type MyResult<T> = std::result::Result<T, DoubleError>;
+
+#[derive(Debug, Clone)]
+struct DoubleError;
+
+impl fmt::Display for DoubleError {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "invalid first item to double")
+    }
+}
+impl error::Error for DoubleError {
+    fn source(&self) -> Option<&(dyn error::Error + 'static)> {
+        None
+    }
+}
+fn my_double_first(vec: Vec<&str>) -> MyResult<i32> {
+    vec.first()
+        .ok_or(DoubleError)
+        .and_then(|s| s.parse::<i32>().map_err(|_| DoubleError).map(|i| 2 * i))
+}
+fn my_double_print(result: MyResult<i32>) {
+    match result {
+        Ok(n) => println!("The first doubled is {}", n),
+        Err(e) => println!("Error: {}", e),
+    }
+}
+
 pub fn run_panics() {
     println!("\nHello, run panics()");
 
@@ -202,4 +237,28 @@ pub fn run_panics() {
 
     let tt = my_multiply("t", "20");
     println!("double ten is {:?}", tt);
+
+    let numbers = vec!["32", "93", "18"];
+    let empty: Vec<&str> = vec![];
+    let strings = vec!["tofu", "93", "18"];
+
+    println!("The first doubled is {:?}", double_first(numbers));
+    println!("The first doubled is {:?}", double_first(empty));
+    println!("The first doubled is {:?}", double_first(strings));
+
+    let numbers2 = vec!["32", "93", "18"];
+    let empty2: Vec<&str> = vec![];
+    let strings2 = vec!["tofu", "93", "18"];
+
+    // my_double_print(my_double_first(numbers2));
+    // my_double_print(my_double_first(empty2));
+    // my_double_print(my_double_first(strings2));
+
+    let (numbers2, errors2): (Vec<_>, Vec<_>) = strings2
+        .into_iter()
+        .map(|s| s.parse::<i32>())
+        .partition(Result::is_ok);
+
+    println!("Numbers: {:?}", numbers2);
+    println!("Errors: {:?}", errors2);
 }

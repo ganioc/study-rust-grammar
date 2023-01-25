@@ -3,6 +3,7 @@ use crate::associate::run_associate;
 use crate::format::{reverse, MyList};
 use crate::macros::run_macros;
 use crate::panics::run_panics;
+use crate::stds::run_std;
 use format::{Deep, MinMax, Person, Structure};
 
 mod macros;
@@ -17,6 +18,7 @@ mod associate;
 mod function;
 mod modules;
 mod panics;
+mod stds;
 
 use std::mem;
 
@@ -97,4 +99,6 @@ fn main() {
     run_macros();
 
     run_panics();
+
+    run_std();
 }
